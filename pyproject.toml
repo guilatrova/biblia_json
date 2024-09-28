@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "bible-json"
+version = "0.1.0"
+description = ""
+authors = ["guilatrova <hello@guilatrova.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+rich = "^13.8.1"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.12.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
