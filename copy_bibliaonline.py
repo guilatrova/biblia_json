@@ -7,7 +7,8 @@ import typing as t
 import json
 
 
-OUTPUT_DIR = Path("./json/pt-br/")
+BR_OUTPUT_DIR = Path("./json/pt-br/")
+US_OUTPUT_DIR = Path("./json/en-us/")
 
 class OutputMeta(t.TypedDict):
     title: str
@@ -21,7 +22,8 @@ class Output(t.TypedDict):
 
 LIST_BOOKS = "https://www.abibliadigital.com.br/api/books"
 GET_CHAPTER = "https://www.bibliaonline.com.br/{VERSION}/{ABBREV}/{CHAPTER}"
-VERSIONS = ["ara", "acf", "nvi"]
+BR_VERSIONS = ["ara", "acf", "nvi"]
+US_VERSIONS = ["kjv"]
 
 def compact_json(raw) -> str:
     return json.dumps(raw, separators=(',', ':')).replace("\n", "")
@@ -59,10 +61,10 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> tuple[dict[str, st
 
     return verses, titles
 
-def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int):
+def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int, output_dir: Path) -> None:
     try:
         for ch in range(1, chapters +1):
-            output_file = OUTPUT_DIR / version / abbrev / f"{ch}.json"
+            output_file = output_dir / version / abbrev / f"{ch}.json"
             if output_file.exists():
                 continue
 
@@ -111,8 +113,11 @@ def main():
             abbrev=abbrev,
         )
 
-        for version in VERSIONS:
-            _download_version(meta, version, abbrev, chapters)
+        for version in BR_VERSIONS:
+            _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
+
+        for version in US_VERSIONS:
+            _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
 
 
 if __name__ == "__main__":
