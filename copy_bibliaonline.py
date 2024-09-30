@@ -55,6 +55,9 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> tuple[dict[str, st
             verse_text_tag = verse_number_span.find_next("span", class_="t")
             if verse_text_tag:
                 verse_text = verse_text_tag.get_text(strip=True)
+                concat = [sibling.get_text(strip=True) for sibling in verse_text_tag.find_next_siblings(attrs={"data-v": f".{verse_number}."})]
+                if concat:
+                    verse_text += " " + " ".join(concat)
 
             if verse_number and verse_text:
                 verses[str(verse_number)] = verse_text
@@ -65,8 +68,8 @@ def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int
     try:
         for ch in range(1, chapters +1):
             output_file = output_dir / version / abbrev / f"{ch}.json"
-            if output_file.exists():
-                continue
+            # if output_file.exists():
+            #     continue
 
             for attempt in range(3):
               try:
@@ -113,8 +116,8 @@ def main():
             abbrev=abbrev,
         )
 
-        for version in BR_VERSIONS:
-            _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
+        # for version in BR_VERSIONS:
+        #     _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
 
         for version in US_VERSIONS:
             _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
