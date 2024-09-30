@@ -45,7 +45,7 @@ def _pull_chapter(book: str, chapter: int) -> dict[str, str]:
             title = a_tag['title']
             _, chapter_verse = title.rsplit(' ', 1)
             _, verse_num = chapter_verse.split(':')
-            verse_text = a_tag.get_text(strip=True)
+            verse_text = a_tag.get_text().replace("\n", "").strip()
             if verse_text.startswith(verse_num):
                 verse_text = verse_text[len(verse_num):].strip()
 
