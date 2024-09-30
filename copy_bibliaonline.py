@@ -68,8 +68,8 @@ def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int
     try:
         for ch in range(1, chapters +1):
             output_file = output_dir / version / abbrev / f"{ch}.json"
-            # if output_file.exists():
-            #     continue
+            if output_file.exists():
+                continue
 
             for attempt in range(3):
               try:
@@ -116,8 +116,8 @@ def main():
             abbrev=abbrev,
         )
 
-        # for version in BR_VERSIONS:
-        #     _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
+        for version in BR_VERSIONS:
+            _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
 
         for version in US_VERSIONS:
             _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
