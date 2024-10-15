@@ -67,7 +67,8 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> tuple[dict[str, st
 def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int, output_dir: Path) -> None:
     try:
         for ch in range(1, chapters +1):
-            output_file = output_dir / version / abbrev / f"{ch}.json"
+            output_abbrev = "at" if abbrev == "atos" else abbrev
+            output_file = output_dir / version / output_abbrev / f"{ch}.json"
             if output_file.exists():
                 continue
 
@@ -110,10 +111,12 @@ def main():
 
         if abbrev == "job":
             abbrev = "jó"
+        elif abbrev == "at":
+            abbrev = "atos"
 
         meta = OutputMeta(
             title=title,
-            abbrev=abbrev,
+            abbrev="at" if abbrev == "atos" else abbrev,
         )
 
         for version in BR_VERSIONS:
