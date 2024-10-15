@@ -8,8 +8,8 @@ import typing as t
 import json
 
 
-BR_OUTPUT_DIR = Path("./json/pt-br/")
-US_OUTPUT_DIR = Path("./json/en-us/")
+BR_OUTPUT_DIR = Path("./json/catolicos/pt-br/")
+US_OUTPUT_DIR = Path("./json/catolicos/en-us/")
 
 class OutputMeta(t.TypedDict):
     title: str
@@ -56,13 +56,16 @@ def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int
     try:
         for ch in range(1, chapters +1):
             filepath_abbrev = SHORT_ABBREV_MAP[abbrev]
-            output_file = output_dir / version / filepath_abbrev / f"{ch}.json"
-            if output_file.exists():
+            output_file = output_dir / "ave-maria" / filepath_abbrev / f"{ch}.json"
+            if output_file.exists() and len(json.loads(output_file.read_text())["content"]) > 0:
                 continue
 
             for attempt in range(3):
               try:
                 chapter_content = _pull_chapter(version, abbrev, ch)
+                if len(chapter_content) == 0:
+                  print(f"[red]Empty chapter {abbrev} {ch}[/red]")
+                  continue
                 break
               except Exception as e:
                 print(f"[red]Attempt {attempt + 1} failed:[/red] {e}")
@@ -130,20 +133,20 @@ BOOKS: list[BookRef] = [
     {"name": "Oseias",               "abbrev": "oseias",               "chapters": 14},
     {"name": "Joel",                 "abbrev": "joel",                 "chapters": 4},
     {"name": "Amós",                 "abbrev": "amos",                 "chapters": 9},
-    {"name": "Obadias",              "abbrev": "obadias",              "chapters": 1},
+    {"name": "Obadias",              "abbrev": "abdias",               "chapters": 1},
     {"name": "Jonas",                "abbrev": "jonas",                "chapters": 4},
     {"name": "Miquéias",             "abbrev": "miqueias",             "chapters": 7},
     {"name": "Naum",                 "abbrev": "naum",                 "chapters": 3},
-    {"name": "Habacuque",            "abbrev": "habacuque",            "chapters": 3},
+    {"name": "Habacuque",            "abbrev": "habacuc",              "chapters": 3},
     {"name": "Sofonias",             "abbrev": "sofonias",             "chapters": 3},
     {"name": "Ageu",                 "abbrev": "ageu",                 "chapters": 2},
     {"name": "Zacarias",             "abbrev": "zacarias",             "chapters": 14},
     {"name": "Malaquias",            "abbrev": "malaquias",            "chapters": 3},
-    {"name": "Mateus",               "abbrev": "mateus",               "chapters": 28},
-    {"name": "Marcos",               "abbrev": "marcos",               "chapters": 16},
-    {"name": "Lucas",                "abbrev": "lucas",                "chapters": 24},
-    {"name": "João",                 "abbrev": "joao",                 "chapters": 21},
-    {"name": "Atos",                 "abbrev": "atos",                 "chapters": 28},
+    {"name": "Mateus",               "abbrev": "sao-mateus",           "chapters": 28},
+    {"name": "Marcos",               "abbrev": "sao-marcos",           "chapters": 16},
+    {"name": "Lucas",                "abbrev": "sao-lucas",            "chapters": 24},
+    {"name": "João",                 "abbrev": "sao-joao",             "chapters": 21},
+    {"name": "Atos",                 "abbrev": "atos-dos-apostolos",   "chapters": 28},
     {"name": "Romanos",              "abbrev": "romanos",              "chapters": 16},
     {"name": "1 Coríntios",          "abbrev": "i-corintios",          "chapters": 16},
     {"name": "2 Coríntios",          "abbrev": "ii-corintios",         "chapters": 13},
@@ -156,9 +159,9 @@ BOOKS: list[BookRef] = [
     {"name": "1 Timóteo",            "abbrev": "i-timoteo",            "chapters": 6},
     {"name": "2 Timóteo",            "abbrev": "ii-timoteo",           "chapters": 4},
     {"name": "Tito",                 "abbrev": "tito",                 "chapters": 3},
-    {"name": "Filemom",              "abbrev": "filemom",              "chapters": 1},
+    {"name": "Filemom",              "abbrev": "filemon",              "chapters": 1},
     {"name": "Hebreus",              "abbrev": "hebreus",              "chapters": 13},
-    {"name": "Tiago",                "abbrev": "tiago",                "chapters": 5},
+    {"name": "Tiago",                "abbrev": "sao-tiago",            "chapters": 5},
     {"name": "1 Pedro",              "abbrev": "i-sao-pedro",          "chapters": 5},
     {"name": "2 Pedro",              "abbrev": "ii-sao-pedro",         "chapters": 3},
     {"name": "1 João",               "abbrev": "i-sao-joao",           "chapters": 5},
@@ -206,20 +209,21 @@ SHORT_ABBREV_MAP: dict[str, str] = {
     "oseias": "os",
     "joel": "jl",
     "amos": "am",
-    "obadias": "ob",
+    "abdias": "ob",
     "jonas": "jn",
     "miqueias": "mq",
     "naum": "na",
-    "habacuque": "hc",
+    "habacuc": "hc",
     "sofonias": "sf",
     "ageu": "ag",
     "zacarias": "zc",
     "malaquias": "ml",
-    "mateus": "mt",
-    "marcos": "mc",
-    "lucas": "lc",
-    "joao": "jo",
-    "atos": "at",
+    # NT
+    "sao-mateus": "mt",
+    "sao-marcos": "mc",
+    "sao-lucas": "lc",
+    "sao-joao": "jo",
+    "atos-dos-apostolos": "at",
     "romanos": "rm",
     "i-corintios": "1co",
     "ii-corintios": "2co",
@@ -232,9 +236,9 @@ SHORT_ABBREV_MAP: dict[str, str] = {
     "i-timoteo": "1tm",
     "ii-timoteo": "2tm",
     "tito": "tt",
-    "filemom": "fm",
+    "filemon": "fm",
     "hebreus": "hb",
-    "tiago": "tg",
+    "sao-tiago": "tg",
     "i-sao-pedro": "1pe",
     "ii-sao-pedro": "2pe",
     "i-sao-joao": "1jo",
@@ -252,7 +256,7 @@ def main():
 
         meta = OutputMeta(
             title=title,
-            abbrev=abbrev,
+            abbrev=SHORT_ABBREV_MAP[abbrev],
         )
 
         for version in BR_VERSIONS:
