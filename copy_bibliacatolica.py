@@ -167,7 +167,7 @@ BOOKS: list[BookRef] = [
     {"name": "1 João",               "abbrev": "i-sao-joao",           "chapters": 5},
     {"name": "2 João",               "abbrev": "ii-sao-joao",          "chapters": 1},
     {"name": "3 João",               "abbrev": "iii-sao-joao",         "chapters": 1},
-    {"name": "Judas",                "abbrev": "judas",                "chapters": 1},
+    {"name": "Judas",                "abbrev": "sao-judas",                "chapters": 1},
     {"name": "Apocalipse",           "abbrev": "apocalipse",           "chapters": 22},
 ]
 
@@ -189,7 +189,7 @@ SHORT_ABBREV_MAP: dict[str, str] = {
     "esdras": "ed",
     "neemias": "ne",
     "tobias": "tb",
-    "judite": "jd",
+    "judite": "jt",
     "ester": "et",
     "i-macabeus": "1mc",
     "ii-macabeus": "2mc",
@@ -244,7 +244,7 @@ SHORT_ABBREV_MAP: dict[str, str] = {
     "i-sao-joao": "1jo",
     "ii-sao-joao": "2jo",
     "iii-sao-joao": "3jo",
-    "judas": "jd",
+    "sao-judas": "jd",
     "apocalipse": "ap",
 }
 
