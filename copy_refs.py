@@ -184,9 +184,11 @@ def _download_chapters(abbrev: str, chapters: int) -> None:
         if not final_ref_dict:
             raise Exception("No references found")
 
+        sorted_final_ref_dict = dict(sorted(final_ref_dict.items(), key=lambda x: (x[0].split(':')[0], int(x[0].split(':')[1]))))
+
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w") as f:
-            f.write(compact_json(final_ref_dict))
+            f.write(compact_json(sorted_final_ref_dict))
 
             print(f"Write [green]{output_file}[/green]")
     except Exception:

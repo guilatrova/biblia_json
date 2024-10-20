@@ -15,3 +15,17 @@
 ## 🔎 Comentários
 
 - [Diario Viver](./json/comments/pt-br/diario-viver/)
+
+## 🔗 Referência Cruzadas
+
+Por livro
+
+- [Referências](./json/refs/)
+
+Exemplo:
+
+```json
+{
+    "gn1:1": ["ex31:18","ex20:11","1cr16:26","ne9:6"]
+}
+```
