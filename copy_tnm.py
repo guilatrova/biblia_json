@@ -110,9 +110,16 @@ def main():
             abbrev = "atos"
 
         meta = OutputMeta(
-            title=title,
+            title=title.replace("-", " "),
             abbrev="at" if abbrev == "atos" else abbrev,
         )
+
+        if abbrev == "lm":
+            title = "Lamentações"
+        elif abbrev == "ct":
+            title = "Cântico-de-Salomão"
+        elif abbrev == "fm":
+            title = "Filêmon"
 
         for version in BR_VERSIONS:
             _download_version(meta, version, title, abbrev, chapters, BR_OUTPUT_DIR)
@@ -120,8 +127,14 @@ def main():
         for version in US_VERSIONS:
             _download_version(meta, version, title, abbrev, chapters, US_OUTPUT_DIR)
 
+    semaphore = threading.Semaphore(5)
+
+    def thread_function(book):
+        with semaphore:
+            process_book(book)
+
     for book in resp:
-        thread = threading.Thread(target=process_book, args=(book,))
+        thread = threading.Thread(target=thread_function, args=(book,))
         threads.append(thread)
         thread.start()
 

@@ -7,6 +7,7 @@
 - [ARA](./json/pt-br/ara/)
 - [BKJF](./json/pt-br/bkjf/)
 - [NVI](./json/pt-br/nvi/)
+- [TNM (Testemunhas de Jeová)](./json/pt-br/tnm/), para fins de apologética
 
 ## 📙 Deuterocanonicos
 
