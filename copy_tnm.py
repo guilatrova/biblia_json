@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 import typing as t
 import json
+import threading
 
 
 BR_OUTPUT_DIR = Path("./json/pt-br/")
@@ -72,8 +73,8 @@ def _download_version(meta: OutputMeta, version: str, book: str, abbrev: str, ch
               except Exception as e:
                 print(f"[red]Attempt {attempt + 1} failed:[/red] {e}")
                 if attempt < 2:
-                  print("[yellow]Retrying in 10 seconds...[/yellow]")
-                  sleep(10)
+                  print("[yellow]Retrying in 60 seconds...[/yellow]")
+                  sleep(60)
                 else:
                   raise
 
@@ -94,7 +95,9 @@ def _download_version(meta: OutputMeta, version: str, book: str, abbrev: str, ch
 
 def main():
     resp = requests.get(LIST_BOOKS).json()
-    for book in resp:
+    threads = []
+
+    def process_book(book):
         abbrev = book["abbrev"]["pt"]
         title = book["name"]
         chapters = book["chapters"]
@@ -116,6 +119,14 @@ def main():
 
         for version in US_VERSIONS:
             _download_version(meta, version, title, abbrev, chapters, US_OUTPUT_DIR)
+
+    for book in resp:
+        thread = threading.Thread(target=process_book, args=(book,))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
 
 
 if __name__ == "__main__":
