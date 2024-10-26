@@ -60,7 +60,7 @@ def _pull_chapters() -> t.Generator[tuple[dict[str, str], dict[str, str]], None,
     soup = BeautifulSoup(raw_html, 'html.parser')
     verses: dict[str, str] = {}
     titles: dict[str, str] = {}
-    cur_ch = 0
+    cur_ch = 1
 
     content_div = soup.find('div', class_='itemFullText')
 
@@ -70,7 +70,7 @@ def _pull_chapters() -> t.Generator[tuple[dict[str, str], dict[str, str]], None,
                 titles["1"] = child.get_text(strip=True)
 
             case 'h4':
-                if cur_ch > 0:
+                if cur_ch > 1:
                     yield verses, titles
                     verses = {}
                     titles = {}
@@ -78,9 +78,13 @@ def _pull_chapters() -> t.Generator[tuple[dict[str, str], dict[str, str]], None,
                 cur_ch += 1
 
             case 'p':
+                if child.get_text(strip=True).startswith("Fonte"):
+                    continue
+
                 full_chapter_content = child.get_text(strip=True)
                 verses = _break_long_str(full_chapter_content)
 
+    yield verses, titles
 
 def main() -> None:
     ch = 1
