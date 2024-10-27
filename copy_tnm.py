@@ -23,9 +23,11 @@ class Output(t.TypedDict):
     titles: t.NotRequired[dict[str, str]]
 
 LIST_BOOKS = "https://www.abibliadigital.com.br/api/books"
-GET_CHAPTER = "https://www.jw.org/pt/biblioteca/biblia/biblia-de-estudo/livros/{BOOK}/{CHAPTER}/"
+GET_BR_CHAPTER = "https://www.jw.org/pt/biblioteca/biblia/biblia-de-estudo/livros/{BOOK}/{CHAPTER}/"
+GET_US_CHAPTER = "https://www.jw.org/en/library/bible/study-bible/books/{BOOK}/{CHAPTER}/"
+# https://www.jw.org/en/library/bible/study-bible/books/john/8/
 BR_VERSIONS = ["tnm"]
-US_VERSIONS = []
+US_VERSIONS = [] # tnw
 
 def compact_json(raw) -> str:
     return json.dumps(raw, separators=(',', ':')).replace("\n", "")
@@ -35,7 +37,7 @@ def _trim_verse_txt(raw: str, cur_verse: str) -> str:
     return re.sub(r'\s+', ' ', raw)
 
 def _pull_chapter(book: str, chapter: int) -> dict[str, str]:
-    resp = requests.get(GET_CHAPTER.format(BOOK=book, CHAPTER=chapter))
+    resp = requests.get(GET_BR_CHAPTER.format(BOOK=book, CHAPTER=chapter))
     resp.raise_for_status()
     raw_html = resp.text
 
@@ -47,6 +49,9 @@ def _pull_chapter(book: str, chapter: int) -> dict[str, str]:
     for verse_span in bible_text_div.find_all("span", class_="verse"):
         if not verses:
             verse_num = "1"
+            # João 8 na TNM começa em 12
+            if chapter == 8 and book == "João":
+                verse_num = "8 12"
         else:
             verse_num = verse_span.find("sup", class_="verseNum").text.strip()
         verse_text = verse_span.get_text(separator=" ", strip=True)
@@ -94,7 +99,7 @@ def _download_version(meta: OutputMeta, version: str, book: str, abbrev: str, ch
         raise
 
 def main():
-    resp = requests.get(LIST_BOOKS).json()
+    book_data = json.loads(Path("json/books.json").read_text())
     threads = []
 
     def process_book(book):
@@ -133,7 +138,7 @@ def main():
         with semaphore:
             process_book(book)
 
-    for book in resp:
+    for book in book_data:
         thread = threading.Thread(target=thread_function, args=(book,))
         threads.append(thread)
         thread.start()
