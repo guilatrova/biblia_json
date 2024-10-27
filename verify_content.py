@@ -86,6 +86,7 @@ def create_table(counts):
 
         for chapter in sorted(chapters_set):
             row = [f"{book} {chapter}"]
+            diff = False
 
             for version in versions:
                 first_col_verse_count = counts[versions[0]][book].get(chapter)
@@ -94,12 +95,15 @@ def create_table(counts):
                     verse_count = counts[version][book][chapter]
                     if verse_count != first_col_verse_count:
                         row.append(f"[red]{verse_count} verses[/red]")
+                        diff = True
                     else:
                         row.append(f"{verse_count} verses")
                 else:
                     row.append("N/A")
 
-            table.add_row(*row)
+
+            if diff:
+                table.add_row(*row)
 
         # input("")
 
@@ -108,6 +112,8 @@ def create_table(counts):
 def main():
     directory = Path('json/pt-br/')
     counts = get_book_chapter_verse_counts(directory)
+    counts |= get_book_chapter_verse_counts(Path('json/en-us/'))
+    counts |= get_book_chapter_verse_counts(Path('json/catolicos/pt-br/'))
     create_table(counts)
 
 if __name__ == "__main__":
