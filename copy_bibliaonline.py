@@ -45,7 +45,7 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> tuple[dict[str, st
         title_text = title_span.get_text(strip=True)
         titles[title_idx] = title_text
 
-    for p_tag in soup.find_all('p', class_='l0', attrs={'data-v': True}):
+    for p_tag in soup.find_all('p', class_=['l0', 'l1'], attrs={'data-v': True}):
         for verse_number_span in p_tag.find_all('span', class_='v', attrs={'data-v': True}):
             verse_text = None
             verse_number = None
@@ -105,8 +105,8 @@ def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int
         raise
 
 def main():
-    resp = requests.get(LIST_BOOKS).json()
-    for book in resp:
+    book_data = json.loads(Path("json/books.json").read_text())
+    for book in book_data:
         abbrev = book["abbrev"]["pt"]
         title = book["name"]
         chapters = book["chapters"]
