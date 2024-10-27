@@ -95,7 +95,7 @@
         "author": "Samuel",
         "chapters": 31,
         "group": "Hist\u00f3ricos",
-        "name": "1\u00ba Samuel",
+        "name": "1 Samuel",
         "testament": "VT"
     },
     {
@@ -106,7 +106,7 @@
         "author": "Samuel",
         "chapters": 24,
         "group": "Hist\u00f3ricos",
-        "name": "2\u00ba Samuel",
+        "name": "2 Samuel",
         "testament": "VT"
     },
     {
@@ -117,7 +117,7 @@
         "author": "Jeremias",
         "chapters": 22,
         "group": "Hist\u00f3ricos",
-        "name": "1\u00ba Reis",
+        "name": "1 Reis",
         "testament": "VT"
     },
     {
@@ -128,7 +128,7 @@
         "author": "Jeremias",
         "chapters": 25,
         "group": "Hist\u00f3ricos",
-        "name": "2\u00ba Reis",
+        "name": "2 Reis",
         "testament": "VT"
     },
     {
@@ -139,7 +139,7 @@
         "author": "Esdras",
         "chapters": 29,
         "group": "Hist\u00f3ricos",
-        "name": "1\u00ba Cr\u00f4nicas",
+        "name": "1 Cr\u00f4nicas",
         "testament": "VT"
     },
     {
@@ -150,7 +150,7 @@
         "author": "Esdras",
         "chapters": 36,
         "group": "Hist\u00f3ricos",
-        "name": "2\u00ba Cr\u00f4nicas",
+        "name": "2 Cr\u00f4nicas",
         "testament": "VT"
     },
     {
@@ -502,7 +502,7 @@
         "author": "Paulo",
         "chapters": 16,
         "group": "Cartas",
-        "name": "1\u00aa Cor\u00edntios",
+        "name": "1 Cor\u00edntios",
         "testament": "NT"
     },
     {
@@ -513,7 +513,7 @@
         "author": "Paulo",
         "chapters": 13,
         "group": "Cartas",
-        "name": "2\u00aa Cor\u00edntios",
+        "name": "2 Cor\u00edntios",
         "testament": "NT"
     },
     {
@@ -568,7 +568,7 @@
         "author": "Paulo",
         "chapters": 5,
         "group": "Cartas",
-        "name": "1\u00aa Tessalonicenses",
+        "name": "1 Tessalonicenses",
         "testament": "NT"
     },
     {
@@ -579,7 +579,7 @@
         "author": "Paulo",
         "chapters": 3,
         "group": "Cartas",
-        "name": "2\u00aa Tessalonicenses",
+        "name": "2 Tessalonicenses",
         "testament": "NT"
     },
     {
@@ -590,7 +590,7 @@
         "author": "Paulo",
         "chapters": 6,
         "group": "Cartas",
-        "name": "1\u00aa Tim\u00f3teo",
+        "name": "1 Tim\u00f3teo",
         "testament": "NT"
     },
     {
@@ -601,7 +601,7 @@
         "author": "Paulo",
         "chapters": 4,
         "group": "Cartas",
-        "name": "2\u00aa Tim\u00f3teo",
+        "name": "2 Tim\u00f3teo",
         "testament": "NT"
     },
     {
@@ -656,7 +656,7 @@
         "author": "Pedro",
         "chapters": 5,
         "group": "Cartas",
-        "name": "1\u00aa Pedro",
+        "name": "1 Pedro",
         "testament": "NT"
     },
     {
@@ -667,7 +667,7 @@
         "author": "Pedro",
         "chapters": 3,
         "group": "Cartas",
-        "name": "2\u00aa Pedro",
+        "name": "2 Pedro",
         "testament": "NT"
     },
     {
@@ -678,7 +678,7 @@
         "author": "Jo\u00e3o",
         "chapters": 5,
         "group": "Cartas",
-        "name": "1\u00aa Jo\u00e3o",
+        "name": "1 Jo\u00e3o",
         "testament": "NT"
     },
     {
@@ -689,7 +689,7 @@
         "author": "Jo\u00e3o",
         "chapters": 1,
         "group": "Cartas",
-        "name": "2\u00aa Jo\u00e3o",
+        "name": "2 Jo\u00e3o",
         "testament": "NT"
     },
     {
@@ -700,7 +700,7 @@
         "author": "Jo\u00e3o",
         "chapters": 1,
         "group": "Cartas",
-        "name": "3\u00aa Jo\u00e3o",
+        "name": "3 Jo\u00e3o",
         "testament": "NT"
     },
     {
