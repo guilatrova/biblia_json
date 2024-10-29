@@ -93,15 +93,14 @@ def remove_accents(input_str: str) -> str:
     return ''.join(c for c in normalized_str if unicodedata.category(c) != 'Mn')
 
 def main():
-    resp = requests.get(LIST_BOOKS).json()
-    for book in resp:
+    book_data = json.loads(Path("json/books.json").read_text())
+    for book in book_data:
         abbrev = book["abbrev"]["pt"]
         title = book["name"]
         chapters = book["chapters"]
 
         if abbrev == "job":
-            abbrev = "jo"
-
+            abbrev = "jó"
 
         meta = OutputMeta(
             title=title,
