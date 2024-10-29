@@ -99,6 +99,7 @@ def create_table(counts):
                     else:
                         row.append(f"{verse_count} verses")
                 else:
+                    diff = True
                     row.append("N/A")
 
 
@@ -113,6 +114,7 @@ def main():
     directory = Path('json/pt-br/')
     counts = get_book_chapter_verse_counts(directory)
     counts |= get_book_chapter_verse_counts(Path('json/en-us/'))
+    counts |= get_book_chapter_verse_counts(Path('json/greek/'))
     counts |= get_book_chapter_verse_counts(Path('json/catolicos/pt-br/'))
     create_table(counts)
 
