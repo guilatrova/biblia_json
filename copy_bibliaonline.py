@@ -23,7 +23,7 @@ class Output(t.TypedDict):
 
 LIST_BOOKS = "https://www.abibliadigital.com.br/api/books"
 GET_CHAPTER = "https://www.bibliaonline.com.br/{VERSION}/{ABBREV}/{CHAPTER}"
-BR_VERSIONS = ["ara", "acf", "nvi"]
+BR_VERSIONS = ["ara"]#, "acf", "nvi"]
 GREEK_VERSIONS = ["receptus"]
 US_VERSIONS = ["kjv"]
 
@@ -61,6 +61,11 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> tuple[dict[str, st
                 if concat:
                     verse_text += " " + " ".join(concat)
 
+                concat = [sibling.get_text(strip=True) for sibling in verse_text_tag.parent.find_next_siblings(attrs={"data-v": f".{verse_number}."})]
+                if concat:
+                    prefix_concat = " " if verse_text[-1] != " " else ""
+                    verse_text += prefix_concat + " ".join(concat)
+
             if verse_number and verse_text:
                 verses[str(verse_number)] = verse_text
 
@@ -71,8 +76,6 @@ def _download_version(meta: OutputMeta, version: str, abbrev: str, chapters: int
         for ch in range(1, chapters +1):
             output_abbrev = "at" if abbrev == "atos" else abbrev
             output_file = output_dir / version / output_abbrev / f"{ch}.json"
-            if output_file.exists():
-                continue
 
             for attempt in range(3):
               try:
@@ -126,12 +129,12 @@ def main():
         for version in BR_VERSIONS:
             _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
 
-        for version in US_VERSIONS:
-            _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
+        # for version in US_VERSIONS:
+        #     _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
 
-        if book["testament"] == "NT":
-            for version in GREEK_VERSIONS:
-                _download_version(meta, version, abbrev, chapters, GREEK_OUTPUT_DIR)
+        # if book["testament"] == "NT":
+        #     for version in GREEK_VERSIONS:
+        #         _download_version(meta, version, abbrev, chapters, GREEK_OUTPUT_DIR)
 
 
 if __name__ == "__main__":
