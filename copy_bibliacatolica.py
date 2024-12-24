@@ -1,11 +1,15 @@
 import re
 from time import sleep
 from rich import print
-import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
 import typing as t
 import json
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 BR_OUTPUT_DIR = Path("./json/catolicos/pt-br/")
@@ -30,13 +34,26 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
 }
 
+options = Options()
+options.headless = True
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service, options=options)
+driver.set_page_load_timeout(3)
+
 def compact_json(raw) -> str:
     return json.dumps(raw, separators=(',', ':')).replace("\n", "")
 
 def _pull_chapter(version: str, abbrev: str, chapter: int) -> dict[str, str]:
-    resp = requests.get(GET_CHAPTER.format(VERSION=version, ABBREV=abbrev, CHAPTER=chapter), headers=headers)
-    resp.raise_for_status()
-    raw_html = resp.text
+    url = GET_CHAPTER.format(VERSION=version, ABBREV=abbrev, CHAPTER=chapter)
+    try:
+        driver.get(url)
+    except TimeoutException:
+        pass
+
+    raw_html = driver.page_source
 
     soup = BeautifulSoup(raw_html, 'html.parser')
     verses: dict[str, str] = {}
@@ -44,11 +61,21 @@ def _pull_chapter(version: str, abbrev: str, chapter: int) -> dict[str, str]:
     section = soup.find('section', class_='entry clearfix')
     if not section:
         return {}
+
     for span in section.find_all('span', class_='html-tag'):
         span.decompose()
+
+    for span in section.find_all('span'):
+        if any('vjs' in cls for cls in span.get('class', [])) or any('ezoic' in attr for attr in span.attrs):
+            span.decompose()
+
     full_text = ' '.join(section.stripped_strings)
     pattern = re.compile(r'(\d+)\.\s*(.*?)\s*(?=\d+\.|$)', re.DOTALL)
-    verses = {num: ' '.join(text.split()) for num, text in pattern.findall(full_text)}
+    for num, text in pattern.findall(full_text):
+        if num in verses or num == '0':
+            continue
+
+        verses[num] = ' '.join(text.split())
 
     return verses
 
@@ -269,4 +296,7 @@ def main():
 if __name__ == "__main__":
     # ch = _pull_chapter("biblia-ave-maria", "genesis", 1)
     # print(ch)
-    main()
+    try:
+        main()
+    finally:
+        driver.quit()
