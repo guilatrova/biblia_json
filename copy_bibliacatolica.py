@@ -193,7 +193,7 @@ SHORT_ABBREV_MAP: dict[str, str] = {
     "ester": "et",
     "i-macabeus": "1mc",
     "ii-macabeus": "2mc",
-    "jo": "jo",
+    "jo": "jó",
     "salmos": "sl",
     "proverbios": "pv",
     "eclesiastes": "ec",
