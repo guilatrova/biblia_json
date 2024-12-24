@@ -20,15 +20,15 @@ class Output(t.TypedDict):
     titles: t.NotRequired[dict[str, str]]
 
 
-VERSIONS = ['grega-e-latina', 'grega', 'latina']
+VERSIONS = ['grego-e-latim', 'grego', 'latim']
 
 def _get_version(title: str) -> str:
     if title == "(Versão Grega e Latina)":
-        return "grega-e-latina"
+        return "grego-e-latim"
     if title == "(Versão Grega)":
-        return "grega"
+        return "grego"
     if title == "(Versão Latina)":
-        return "latina"
+        return "latim"
     raise ValueError(f"Unknown version: {title}")
 
 GET_BOOK = "https://verdadeperdida.wordpress.com/2013/03/03/evangelho-de-nicodemus-descida-de-jesus-ao-inferno/"
@@ -117,7 +117,7 @@ def main() -> None:
             content=chapter_content
         )
 
-        if version == "grega-e-latina" and ch == 1:
+        if version == "grego-e-latim" and ch == 1:
             new_content = _fix_grego_latino_prologue(new_content)
 
         output_file.parent.mkdir(parents=True, exist_ok=True)
