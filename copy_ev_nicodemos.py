@@ -89,8 +89,22 @@ def _pull_chapters() -> t.Generator[tuple[dict[str, str], int, VERSION_T], None,
 
             if not verse_num.isdigit():
                 cur_verse_num = max(list([int(k) for k in verses.keys()])) if verses else 0
-                verse_num = cur_verse_num + 1
+                if cur_verse_num == 0:
+                    verse_num = cur_verse_num + 1
+                else:
+                    verse_num = cur_verse_num
+
                 verse_content = text
+            else:
+                verse_num = int(verse_num)
+                if verse_num in verses:
+                    cur_text = verses[verse_num]
+                    verse_content = [cur_text].extend(verse_content)
+
+                verse_content = " ".join(verse_content)
+
+            if verse_content == "Descida de Cristo ao Inferno" or verse_content == "Evangelho de Nicodemus":
+                continue
 
             verses[verse_num] = verse_content
             continue
