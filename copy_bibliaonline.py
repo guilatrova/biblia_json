@@ -9,6 +9,7 @@ import json
 
 BR_OUTPUT_DIR = Path("./json/pt-br/")
 GREEK_OUTPUT_DIR = Path("./json/greek/")
+HEBREW_OUTPUT_DIR = Path("./json/hebrew/")
 US_OUTPUT_DIR = Path("./json/en-us/")
 
 class OutputMeta(t.TypedDict):
@@ -25,6 +26,7 @@ LIST_BOOKS = "https://www.abibliadigital.com.br/api/books"
 GET_CHAPTER = "https://www.bibliaonline.com.br/{VERSION}/{ABBREV}/{CHAPTER}"
 BR_VERSIONS = ["ara"]#, "acf", "nvi"]
 GREEK_VERSIONS = ["receptus"]
+HEBREW_VERSIONS = ["bhs"]
 US_VERSIONS = ["kjv"]
 
 def compact_json(raw) -> str:
@@ -126,8 +128,8 @@ def main():
             abbrev="at" if abbrev == "atos" else abbrev,
         )
 
-        for version in BR_VERSIONS:
-            _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
+        # for version in BR_VERSIONS:
+        #     _download_version(meta, version, abbrev, chapters, BR_OUTPUT_DIR)
 
         # for version in US_VERSIONS:
         #     _download_version(meta, version, abbrev, chapters, US_OUTPUT_DIR)
@@ -135,6 +137,10 @@ def main():
         # if book["testament"] == "NT":
         #     for version in GREEK_VERSIONS:
         #         _download_version(meta, version, abbrev, chapters, GREEK_OUTPUT_DIR)
+
+        if book["testament"] == "VT":
+            for version in HEBREW_VERSIONS:
+                _download_version(meta, version, abbrev, chapters, HEBREW_OUTPUT_DIR)
 
 
 if __name__ == "__main__":
