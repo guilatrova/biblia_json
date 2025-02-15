@@ -4,6 +4,7 @@ from rich import print
 from pathlib import Path
 import typing as t
 import json
+from bs4 import BeautifulSoup
 import requests
 
 
@@ -57,6 +58,11 @@ class ChapterRespData(t.TypedDict):
     verse_content: str
 
 
+def _trim_html_as_text(html: str) -> str:
+    soup = BeautifulSoup(html, "html.parser")
+    return soup.get_text(strip=True)
+
+
 def _pull_chapter(
     book: str, chapter: int, at: bool
 ) -> tuple[dict[str, str], dict[str, str]]:
@@ -75,9 +81,9 @@ def _pull_chapter(
         title = item["verse_title"]
 
         if title:
-            titles[str(verse)] = title
+            titles[str(verse)] = _trim_html_as_text(title)
 
-        verses[str(verse)] = content
+        verses[str(verse)] = _trim_html_as_text(content)
 
     return verses, titles
 
@@ -89,11 +95,11 @@ def _download_version(
         for ch in range(1, chapters + 1):
             filepath_abbrev = SHORT_ABBREV_MAP[abbrev]
             output_file = output_dir / filepath_abbrev / f"{ch}.json"
-            if (
-                output_file.exists()
-                and len(json.loads(output_file.read_text())["content"]) > 0
-            ):
-                continue
+            # if (
+            #     output_file.exists()
+            #     and len(json.loads(output_file.read_text())["content"]) > 0
+            # ):
+            #     continue
 
             for attempt in range(3):
                 try:
