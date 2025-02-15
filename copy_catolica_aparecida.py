@@ -59,8 +59,11 @@ class ChapterRespData(t.TypedDict):
 
 
 def _trim_html_as_text(html: str) -> str:
+    html = html.strip()
     soup = BeautifulSoup(html, "html.parser")
-    return soup.get_text(strip=True)
+    result = soup.get_text(separator=" ", strip=True)
+
+    return result
 
 
 def _pull_chapter(
